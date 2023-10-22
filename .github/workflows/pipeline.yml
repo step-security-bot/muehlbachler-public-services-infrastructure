@@ -1,0 +1,107 @@
+---
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  conform:
+    runs-on: ubuntu-latest
+    name: Conform
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: siderolabs/conform@v0.1.0-alpha.27
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  preview:
+    runs-on: ubuntu-latest
+    name: Pulumi Preview
+    strategy:
+      max-parallel: 12
+      matrix:
+        node-version: ["16"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT }}
+
+      - run: |
+          npm install -g yarn
+
+      - run: |
+          yarn install
+          yarn build
+
+      - uses: pulumi/actions@v4
+        with:
+          command: preview
+          stack-name: prod
+          # refresh: true
+        env:
+          CLOUDSDK_COMPUTE_REGION: "${{ secrets.CLOUDSDK_COMPUTE_REGION }}"
+          DOPPLER_TOKEN: "${{ secrets.DOPPLER_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.GH_PAT_TOKEN }}"
+          PULUMI_ACCESS_TOKEN: "${{ secrets.PULUMI_ACCESS_TOKEN }}"
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   name: Pulumi Deploy
+  #   needs:
+  #     - preview
+  #   strategy:
+  #     max-parallel: 12
+  #     matrix:
+  #       node-version: ["16"]
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+
+  #     - uses: 'google-github-actions/auth@v1'
+  #       with:
+  #         workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
+  #         service_account: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT }}
+
+  #     - run: |
+  #         npm install -g yarn
+
+  #     - run: |
+  #         yarn install
+  #         yarn build
+
+  #     - uses: pulumi/actions@v4
+  #       with:
+  #         command: up
+  #         stack-name: prod
+  #       env:
+  #         CLOUDSDK_COMPUTE_REGION: "${{ secrets.CLOUDSDK_COMPUTE_REGION }}"
+  #         DOPPLER_TOKEN: "${{ secrets.DOPPLER_TOKEN }}"
+  #         GITHUB_TOKEN: "${{ secrets.GH_PAT_TOKEN }}"
+  #         PULUMI_ACCESS_TOKEN: "${{ secrets.PULUMI_ACCESS_TOKEN }}"

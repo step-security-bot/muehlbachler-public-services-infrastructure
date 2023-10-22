@@ -1,0 +1,78 @@
+config:
+  muehlbachler-public-services:argocd:
+    applicationsRepository:
+      branch: HEAD
+      repository: muhlba91/muehlbachler-public-services-cluster-applications
+    appsAutosync: true
+    appsChartVersion: 1.4.1
+  muehlbachler-public-services:bucketId: infrastructure-assets-87d6dbd4-4928-4cdc-8d9d-2b19417489d9
+  muehlbachler-public-services:cluster:
+    accessConfiguration:
+      encryptionKey:
+        cryptoKeyId: infrastructure-encryption
+        keyringId: infrastructure-encryption
+        location: europe
+      projects:
+        - muehlbachler-dns
+    enableSecurityPosture: true
+    nodePools:
+      workloads:
+        diskSize: 48
+        initialNodeCount: 1
+        machineType: t2d-standard-1
+        maxCount: 2
+        minCount: 1
+        spot: true
+    releaseChannel: REGULAR
+    subnet: cluster
+    zone: europe-west4-a
+  muehlbachler-public-services:database:
+    database:
+      authentik: authentik
+    users:
+      - authentik
+  muehlbachler-public-services:edgeInstance:
+    diskSize: 10
+    hostname: edge.muehlbachler.io
+    machineType: e2-micro
+    network:
+      externalIp: edge
+      ptrRecords: false
+      subnet: edge
+    sourceImage: debian-cloud/debian-12
+    zone: europe-west4-a
+  muehlbachler-public-services:ingress:
+    port:
+      mail:
+        numbers:
+          - 25
+    service:
+      http:
+        port: 80
+        target:
+          port: 8000
+          service: traefik.traefik
+      https:
+        port: 443
+        target:
+          port: 8443
+          service: traefik.traefik
+      ldaps:
+        port: 636
+        target:
+          port: 8636
+          service: traefik.traefik
+  muehlbachler-public-services:network:
+    externalIp:
+      edge:
+        ipv6: false
+        subnet: edge
+        tier: STANDARD
+    subnet:
+      cluster:
+        cidr: 10.100.0.0/16
+        region: europe-west4
+      edge:
+        cidr: 10.101.0.0/16
+        region: europe-west4
+    tier: STANDARD

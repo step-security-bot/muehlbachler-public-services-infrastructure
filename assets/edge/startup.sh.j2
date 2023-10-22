@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# system
+echo "[system] updating apt cache..."
+apt-get update
+
+# haproxy: {{ hash.haproxy }}
+echo "[haproxy] installing and configuring..."
+apt-get install --yes haproxy
+gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/haproxy/** /etc/haproxy/
+
+echo "[haproxy] enabling and starting..."
+systemctl enable --now haproxy
