@@ -134,6 +134,7 @@ cluster:
   enableSecurityPosture: should security posture analysis be enabled for the cluster and its nodes? (optional, default: false)
   nodePools: a map of the node pool name to its configuration
     <NAME>:
+      enabled: should this pool be enabled? (optional, default: true)
       minCount: minimum count of machines
       maxCount: maximum count of machines
       initialNodeCount: initial number of machines to provision

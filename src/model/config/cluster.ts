@@ -19,6 +19,7 @@ export type ClusterConfig = {
  * Defines cluster node pool configuration.
  */
 export type ClusterNodePoolConfig = {
+  readonly enabled?: boolean;
   readonly minCount: number;
   readonly maxCount: number;
   readonly initialNodeCount: number;

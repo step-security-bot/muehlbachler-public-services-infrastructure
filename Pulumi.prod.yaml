@@ -16,6 +16,18 @@ config:
         - muehlbachler-dns
     enableSecurityPosture: true
     nodePools:
+      github-runners:
+        diskSize: 64
+        enabled: false
+        initialNodeCount: 0
+        machineType: t2d-standard-2
+        maxCount: 2
+        minCount: 0
+        spot: true
+        taints:
+          - effect: NO_SCHEDULE
+            key: reserved
+            value: github-runners
       workloads:
         diskSize: 48
         initialNodeCount: 1
