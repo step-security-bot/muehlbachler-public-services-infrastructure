@@ -112,6 +112,8 @@ jobs:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_SERVICE_ACCOUNT }}
 
+      - uses: simenandre/setup-gke-gcloud-auth-plugin@v1
+
       - run: |
           npm install -g yarn
 

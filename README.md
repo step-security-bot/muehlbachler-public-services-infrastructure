@@ -3,7 +3,7 @@
 [![Build status](https://img.shields.io/github/actions/workflow/status/muhlba91/muehlbachler-public-services-infrastructure/pipeline.yml?style=for-the-badge)](https://github.com/muhlba91/muehlbachler-public-services-infrastructure/actions/workflows/pipeline.yml)
 [![License](https://img.shields.io/github/license/muhlba91/muehlbachler-public-services-infrastructure?style=for-the-badge)](LICENSE.md)
 
-This repository contains the infrastructure as code (IaC) for the `Mail Aliases` based on [SimpleLogin](https://github.com/simple-login/app) using [Pulumi](http://pulumi.com).
+This repository contains the infrastructure as code (IaC) for personal public services using [Pulumi](http://pulumi.com).
 
 ---
 
