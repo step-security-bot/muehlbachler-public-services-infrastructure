@@ -29,6 +29,8 @@ export const writeFilePulumiAndUploadToS3 = (
   return writeFilePulumi(path, content, {
     permissions: permissions,
   }).apply(() =>
-    uploadToGCS(bucketId, `${BUCKET_PATH}/${s3SubPath}${name}`, path, {}),
+    uploadToGCS(bucketId, `${BUCKET_PATH}/${s3SubPath}${name}`, {
+      content: content,
+    }),
   );
 };
