@@ -15,7 +15,7 @@ import { createWorkloadIdentity } from '../kubernetes/workload_identity';
  * @param {kubernetes.Provider} kubernetesProvider the Kubernetes provider
  * @returns {gcp.serviceaccount.Account} the service account
  */
-export const createArgoServiceAccount = (
+export const createArgoWorkloadIdentity = (
   namespace: kubernetes.core.v1.Namespace,
   cluster: ClusterData,
   kubernetesProvider: kubernetes.Provider,

@@ -47,6 +47,7 @@ const deployAdminPasswordSecrets = (
     {
       provider: provider,
       dependsOn: [cluster.resource],
+      deleteBeforeReplace: true,
     },
   );
 };
@@ -81,6 +82,7 @@ export const deployRepositorySecrets = async (
     {
       provider: provider,
       dependsOn: [cluster.resource],
+      deleteBeforeReplace: true,
     },
   );
 };

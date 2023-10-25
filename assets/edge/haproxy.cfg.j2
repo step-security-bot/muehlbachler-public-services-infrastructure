@@ -26,7 +26,7 @@ frontend {{ proxy.name }}
 
 backend {{ proxy.name }}
     server backend-{{ proxy.name }} {{ proxy.target }} check inter 2000 rise 2 fall 3 resolvers internal
-{%- endfor %}
+{% endfor %}
 
 # dns resolver
 resolvers internal

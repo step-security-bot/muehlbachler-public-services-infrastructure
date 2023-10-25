@@ -26,6 +26,7 @@ export const createUsers = (provider: pg.Provider) => {
       },
       { provider: provider },
     );
+
     writeToDoppler(
       'PUBLIC_SERVICES_CLUSTER_POSTGRESQL_USER_' + user.toUpperCase(),
       pgUser.name,

@@ -32,6 +32,9 @@ export const createEdgeInstance = (
   });
 
   const subnetworkId = network.subnets[edgeInstanceConfig.network.subnet].id;
+  const hasIPv6 =
+    network.externalIPs[edgeInstanceConfig.network.externalIp].ipv6 !=
+    undefined;
 
   const instanceTemplate = new gcp.compute.InstanceTemplate(
     'gcp-instance-template-edge-instance',
@@ -101,9 +104,6 @@ export const createEdgeInstance = (
     },
   );
 
-  const hasIPv6 =
-    network.externalIPs[edgeInstanceConfig.network.externalIp].ipv6 !=
-    undefined;
   new gcp.compute.InstanceFromTemplate(
     'gcp-instance-edge-instance',
     {

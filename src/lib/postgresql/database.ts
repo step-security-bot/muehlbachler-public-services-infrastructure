@@ -18,6 +18,7 @@ export const createDatabases = (provider: pg.Provider) => {
       },
       { provider: provider },
     );
+
     writeToDoppler(
       'PUBLIC_SERVICES_CLUSTER_POSTGRESQL_DATABASE_' + db.toUpperCase(),
       pgDb.name,

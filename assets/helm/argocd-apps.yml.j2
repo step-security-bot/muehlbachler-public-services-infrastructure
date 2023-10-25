@@ -1,0 +1,31 @@
+---
+applications:
+  - name: cluster-applications
+    namespace: argocd
+    project: default
+    additionalLabels: {}
+    additionalAnnotations: {}
+    revisionHistoryLimit: 1
+    finalizers:
+      - "resources-finalizer.argocd.argoproj.io"
+    destination:
+      namespace: argocd
+      server: "https://kubernetes.default.svc"
+    sources:
+      - repoURL: {{ applicationsRepository.url }}
+        targetRevision: {{ applicationsRepository.branch }}
+        path: "library/charts/applications"
+        helm:
+          valueFiles:
+            - "/app-of-apps/values.yaml"
+            - "/app-of-apps/values-{{ environment }}.yaml"
+    syncPolicy:
+    {%- if appsAutosync %}
+      automated:
+        prune: false
+        selfHeal: true
+        allowEmpty: false
+    {%- endif %}
+      syncOptions:
+        - "CreateNamespace=false"
+        - "FailOnSharedResource=true"

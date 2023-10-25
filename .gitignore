@@ -190,3 +190,4 @@ local.env
 outputs/
 gcp-*-key.json
 gke_gcloud_auth_plugin_cache
+export.json

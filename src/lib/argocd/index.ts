@@ -7,7 +7,7 @@ import { createRandomPassword } from '../util/random';
 
 import { deployArgo } from './deployment';
 import { deploySecrets } from './secrets';
-import { createArgoServiceAccount } from './workload_identity';
+import { createArgoWorkloadIdentity } from './workload_identity';
 
 /**
  * Creates the ArgoCD resources.
@@ -37,7 +37,7 @@ export const createArgoResources = async (
     },
   );
 
-  const serviceAccount = createArgoServiceAccount(
+  const serviceAccount = createArgoWorkloadIdentity(
     namespace,
     cluster,
     kubernetesProvider,
@@ -45,7 +45,7 @@ export const createArgoResources = async (
 
   adminPassword.password.apply(async (password) => {
     await deploySecrets(password, cluster, kubernetesProvider);
-    await deployArgo(password, serviceAccount, cluster, kubernetesProvider);
+    await deployArgo(password, serviceAccount, cluster);
   });
 
   return adminPassword;
