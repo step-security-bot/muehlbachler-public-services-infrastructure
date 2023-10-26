@@ -80,7 +80,7 @@ patches:
             memory: 96Mi
           limits:
             cpu: 250m
-            memory: 192Mi
+            memory: 256Mi
     target:
       kind: Deployment
       name: source-controller
