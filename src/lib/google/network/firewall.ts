@@ -139,29 +139,3 @@ export const createEdgeInstanceFirewalls = (network: NetworkData) => {
         ),
     );
 };
-
-/**
- * Creates the Kubernetes node firewalls.
- *
- * @param {NetworkData} network the network
- */
-export const createKubernetesNodeFirewalls = (network: NetworkData) => {
-  new gcp.compute.Firewall(
-    `gcp-firewall-ingress-argocd-ipv4`,
-    {
-      name: `${globalName}-ingress-argocd-ipv4-${environment}`,
-      description: `${globalName}/${environment}: ArgoCD IPv4 ingress rules`,
-      direction: 'INGRESS',
-      network: network.resource.id,
-      sourceRanges: ['0.0.0.0/0'],
-      targetTags: [CLUSTER_NAME],
-      allows: [
-        {
-          protocol: 'tcp',
-          ports: ['30443'],
-        },
-      ],
-    },
-    {},
-  );
-};

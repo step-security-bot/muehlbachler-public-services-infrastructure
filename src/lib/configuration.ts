@@ -5,7 +5,6 @@ import {
   StackReference,
 } from '@pulumi/pulumi';
 
-import { ArgocdConfig } from '../model/config/argocd';
 import { ClusterConfig } from '../model/config/cluster';
 import { DatabaseConfig } from '../model/config/database';
 import { EdgeInstanceConfig } from '../model/config/edge_instance';
@@ -22,7 +21,6 @@ export const edgeInstanceConfig =
   config.requireObject<EdgeInstanceConfig>('edgeInstance');
 export const ingressConfig = config.requireObject<IngressConfig>('ingress');
 export const databaseConfig = config.requireObject<DatabaseConfig>('database');
-export const argocdConfig = config.requireObject<ArgocdConfig>('argocd');
 
 const sharedServicesStack = new StackReference(
   `${getOrganization()}/muehlbachler-shared-services/${environment}`,

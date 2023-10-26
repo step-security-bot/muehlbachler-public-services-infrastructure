@@ -10,7 +10,6 @@ import {
   globalName,
 } from '../../configuration';
 import { renderTemplate } from '../../util/template';
-import { createKubernetesNodeFirewalls } from '../network/firewall';
 
 import { createNodePools } from './node_pool';
 
@@ -108,7 +107,6 @@ export const createCluster = (network: NetworkData): ClusterData => {
   );
 
   createNodePools(cluster);
-  createKubernetesNodeFirewalls(network);
 
   return {
     resource: cluster,

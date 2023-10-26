@@ -50,19 +50,6 @@ The following section describes the configuration which must be set in the Pulum
 
 ***Attention:*** do use [Secrets Encryption](https://www.pulumi.com/docs/concepts/secrets/#:~:text=Pulumi%20never%20sends%20authentication%20secrets,“secrets”%20for%20extra%20protection.) provided by Pulumi for secret values!
 
-### ArgoCD
-
-ArgoCD is installed and configured following the app-of-apps pattern.
-
-```yaml
-argocd:
-  applicationsRepository:
-    repository: the repository name (owner/name) to configure as the app-of-apps repository
-    branch: the branch to configure
-  appsChartVersion: the Helm chart version of the argocd-apps chart
-  appsAutosync: enable automatic synchronization for the app-of-apps (optional, default: false)
-```
-
 ### Database
 
 A database is created with the corresponding user.

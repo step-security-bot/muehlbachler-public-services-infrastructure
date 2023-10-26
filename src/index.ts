@@ -1,6 +1,3 @@
-import * as kubernetes from '@pulumi/kubernetes';
-
-import { createArgoResources } from './lib/argocd';
 import { createCertManagerResources } from './lib/cert_manager';
 import { edgeInstanceConfig } from './lib/configuration';
 import { createExternalDNSResources } from './lib/external_dns';
@@ -24,20 +21,10 @@ export = async () => {
   // cluster
   const cluster = createCluster(network);
   writeFilePulumiAndUploadToS3('admin.conf', cluster.kubeconfig, {});
-  const kubernetesProvider = new kubernetes.Provider(
-    'gke-cluster',
-    {
-      kubeconfig: cluster.kubeconfig,
-    },
-    {
-      dependsOn: [cluster.resource],
-    },
-  );
 
   // cluster resources
   const externalDnsServiceAccount = createExternalDNSResources();
   const certManagerServiceAccount = createCertManagerResources();
-  const argocdPassword = await createArgoResources(cluster, kubernetesProvider);
   const fluxServiceAccount = createFluxResources();
 
   // edge instance
@@ -49,9 +36,6 @@ export = async () => {
         endpoint: cluster.resource.endpoint,
         certificateAuthority: cluster.resource.masterAuth.clusterCaCertificate,
         kubeconfig: cluster.kubeconfig,
-      },
-      argocd: {
-        password: argocdPassword.password,
       },
       fluxcd: {
         serviceAccount: fluxServiceAccount.email,

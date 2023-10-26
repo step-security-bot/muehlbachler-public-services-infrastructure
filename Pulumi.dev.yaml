@@ -1,10 +1,4 @@
 config:
-  muehlbachler-public-services:argocd:
-    applicationsRepository:
-      branch: HEAD
-      repository: muhlba91/muehlbachler-public-services-cluster-applications
-    appsAutosync: false
-    appsChartVersion: 1.4.1
   muehlbachler-public-services:bucketId: infrastructure-assets-87d6dbd4-4928-4cdc-8d9d-2b19417489d9
   muehlbachler-public-services:cluster:
     accessConfiguration:
