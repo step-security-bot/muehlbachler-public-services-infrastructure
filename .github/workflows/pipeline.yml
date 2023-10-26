@@ -111,3 +111,5 @@ jobs:
             --interval 5m \
             --author-name "github-actions[bot]" \
             --author-email "${{ github.action }}+github-actions[bot]@users.noreply.github.com"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GH_PAT_TOKEN }}"
