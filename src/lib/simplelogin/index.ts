@@ -1,7 +1,8 @@
 import { Output } from '@pulumi/pulumi';
 
-import { NetworkIPData } from '../../model/network';
+import { NetworkData, NetworkIPData } from '../../model/network';
 import { globalName } from '../configuration';
+import { createSimpleloginFirewalls } from '../google/network/firewall';
 import { writeToDoppler } from '../util/doppler';
 
 import { createAWSResources } from './aws';
@@ -14,11 +15,13 @@ import { createDNSRecords } from './record';
  *
  * @param {NetworkIPData} externalIp the external IP of the server
  * @param {NetworkIPData} internalIp the internal IP of the server
+ * @param {NetworkData} network the network
  * @returns {Output<string>} the dkim public key
  */
 export const createSimpleloginResources = (
   externalIp: NetworkIPData,
   internalIp: NetworkIPData,
+  network: NetworkData,
 ): Output<string> => {
   createFlaskSecret();
 
@@ -32,6 +35,8 @@ export const createSimpleloginResources = (
     internalIp.ipv4.address,
     `${globalName}-cluster-mail-relay`,
   );
+
+  createSimpleloginFirewalls(network);
 
   return dkimKey;
 };

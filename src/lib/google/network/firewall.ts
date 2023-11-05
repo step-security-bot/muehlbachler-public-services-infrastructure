@@ -139,3 +139,29 @@ export const createEdgeInstanceFirewalls = (network: NetworkData) => {
         ),
     );
 };
+
+/**
+ * Creates the SimpleLogin related firewalls.
+ *
+ * @param {NetworkData} network the network
+ */
+export const createSimpleloginFirewalls = (network: NetworkData) => {
+  new gcp.compute.Firewall(
+    'gcp-firewall-ingress-simplelogin-submission',
+    {
+      name: `${globalName}-ingress-simplelogin-submission-${environment}`,
+      description: `${globalName}/${environment}: SimpleLogin submission ingress rules`,
+      direction: 'INGRESS',
+      network: network.resource.id,
+      sourceRanges: ['10.0.0.0/8'],
+      targetTags: [INSTANCE_NAME],
+      allows: [
+        {
+          protocol: 'tcp',
+          ports: ['1025'],
+        },
+      ],
+    },
+    {},
+  );
+};
