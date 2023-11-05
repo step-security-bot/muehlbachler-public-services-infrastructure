@@ -1,4 +1,4 @@
-import { PrivateKey } from '@pulumi/tls';
+import { Output } from '@pulumi/pulumi';
 
 import { globalName } from '../configuration';
 import { writeToDoppler } from '../util/doppler';
@@ -7,9 +7,9 @@ import { createRSAkey } from '../util/rsa_key';
 /**
  * Creates the SimpleLogin DKIM key.
  *
- * @returns {PrivateKey} the DKIM key
+ * @returns {Output<string>} the DKIM key
  */
-export const createDKIMKey = (): PrivateKey => {
+export const createDKIMKey = (): Output<string> => {
   const dkimKey = createRSAkey('dkim-mail-relay', { rsaBits: 2048 });
 
   writeToDoppler(
@@ -23,5 +23,12 @@ export const createDKIMKey = (): PrivateKey => {
     `${globalName}-cluster-mail-relay`,
   );
 
-  return dkimKey;
+  return dkimKey.publicKeyPem.apply((key) =>
+    key
+      .replace('-----BEGIN PUBLIC KEY-----\n', '')
+      .replace('-----END PUBLIC KEY-----', '')
+      .trim()
+      .split('\n')
+      .join(''),
+  );
 };

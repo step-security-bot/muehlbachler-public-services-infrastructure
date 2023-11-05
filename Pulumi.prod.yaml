@@ -73,7 +73,7 @@ config:
         port: 20381
         target:
           port: 20381
-          service: handler.simplelogin
+          service: simplelogin-handler.simplelogin
       smtp:
         exposed: false
         port: 25

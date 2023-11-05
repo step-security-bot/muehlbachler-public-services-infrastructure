@@ -1,6 +1,8 @@
 import { Output } from '@pulumi/pulumi';
 
 import { ExternalIPData } from '../../model/network';
+import { globalName } from '../configuration';
+import { writeToDoppler } from '../util/doppler';
 
 import { createAWSResources } from './aws';
 import { createDKIMKey } from './dkim';
@@ -21,7 +23,13 @@ export const createSimpleloginResources = (
   createAWSResources();
 
   const dkimKey = createDKIMKey();
-  createDNSRecords(externalIp, dkimKey.publicKeyPem);
+  createDNSRecords(externalIp, dkimKey);
 
-  return dkimKey.publicKeyPem;
+  writeToDoppler(
+    'PUBLIC_SERVICES_MAIL_RELAY_POSTFIX_SERVER',
+    externalIp.ipv4.address,
+    `${globalName}-cluster-mail-relay`,
+  );
+
+  return dkimKey;
 };

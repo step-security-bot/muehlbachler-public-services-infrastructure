@@ -35,14 +35,6 @@ export const createDNSRecords = (
   }
 
   // DKIM and SPF
-  const dkimKey = dkimPublicKey.apply((key) =>
-    key
-      .replace('-----BEGIN PUBLIC KEY-----\n', '')
-      .replace('-----END PUBLIC KEY-----', '')
-      .trim()
-      .split('\n')
-      .join(''),
-  );
   createRecord(
     `_adsp._domainkey.${mailConfig.domain}`,
     mailConfig.zoneId,
@@ -55,7 +47,7 @@ export const createDNSRecords = (
     mailConfig.zoneId,
     'TXT',
     [
-      interpolate`v=DKIM1; k=rsa; p=${dkimKey}`.apply((entry) =>
+      interpolate`v=DKIM1; k=rsa; p=${dkimPublicKey}`.apply((entry) =>
         splitByLength(entry, 'TXT'),
       ),
     ],
