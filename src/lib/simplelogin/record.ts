@@ -3,7 +3,6 @@ import { interpolate, Output } from '@pulumi/pulumi';
 import { ExternalIPData } from '../../model/network';
 import { mailConfig } from '../configuration';
 import { createRecord } from '../google/dns/record';
-import { b64encode } from '../util/base64';
 
 /**
  * Creates the base DNS records.
@@ -36,6 +35,14 @@ export const createDNSRecords = (
   }
 
   // DKIM and SPF
+  const dkimKey = dkimPublicKey.apply((key) =>
+    key
+      .replace('-----BEGIN PUBLIC KEY-----\n', '')
+      .replace('-----END PUBLIC KEY-----', '')
+      .trim()
+      .split('\n')
+      .join(''),
+  );
   createRecord(
     `_adsp._domainkey.${mailConfig.domain}`,
     mailConfig.zoneId,
@@ -48,10 +55,10 @@ export const createDNSRecords = (
     mailConfig.zoneId,
     'TXT',
     [
-      interpolate`v=DKIM1; k=rsa; p=${dkimPublicKey.apply((key) =>
-        b64encode(key),
-      )}`.apply((entry) => splitByLength(entry, 'TXT')),
-    ], // FIXME: dkim key
+      interpolate`v=DKIM1; k=rsa; p=${dkimKey}`.apply((entry) =>
+        splitByLength(entry, 'TXT'),
+      ),
+    ],
     {},
   );
   createRecord(
