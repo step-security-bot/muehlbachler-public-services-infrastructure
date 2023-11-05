@@ -10,51 +10,50 @@ import {
 } from '../../configuration';
 
 /**
- * Creates the external IP addresses.
+ * Creates the internal IP addresses.
  *
  * @param {StringMap<gcp.compute.Subnetwork>} subnets the subnetworks
- * @param {gcp.compute.ProjectDefaultNetworkTier} networkTier the network tier
- * @returns {StringMap<NetworkIPData>} the external IP addresses
+ * @returns {StringMap<NetworkIPData>} the internal IP addresses
  */
-export const createExternalIPs = (
+export const createInternalIPs = (
   subnets: StringMap<gcp.compute.Subnetwork>,
-  networkTier: gcp.compute.ProjectDefaultNetworkTier,
 ): StringMap<NetworkIPData> =>
   Object.fromEntries(
-    Object.entries(networkConfig.externalIp).map(([name, config]) => [
+    Object.entries(networkConfig.internalIp).map(([name, config]) => [
       name,
       {
         ipv4: new gcp.compute.Address(
-          `gcp-address-ipv4-${name}`,
+          `gcp-address-internal-ipv4-${name}`,
           {
-            name: `${globalName}-${name}-ipv4-${environment}`,
-            description: `${globalName}/${environment}: ${name} IPv4 address`,
+            name: `${globalName}-${name}-internal-ipv4-${environment}`,
+            description: `${globalName}/${environment}: ${name} Internal IPv4 address`,
             region: networkConfig.subnet[config.subnet].region,
-            addressType: 'EXTERNAL',
-            networkTier: config.tier ?? 'STANDARD',
+            addressType: 'INTERNAL',
+            subnetwork: subnets[config.subnet].id,
+            purpose: 'GCE_ENDPOINT',
             labels: commonLabels,
           },
           {
-            dependsOn: [subnets[config.subnet], networkTier],
+            dependsOn: [subnets[config.subnet]],
             ignoreChanges: ['users'],
           },
         ),
         ipv6: config.ipv6
           ? new gcp.compute.Address(
-              `gcp-address-ipv6-${name}`,
+              `gcp-address-internal-ipv6-${name}`,
               {
-                name: `${globalName}-${name}-ipv6-${environment}`,
-                description: `${globalName}/${environment}: ${name} IPv6 address`,
+                name: `${globalName}-${name}-internal-ipv6-${environment}`,
+                description: `${globalName}/${environment}: ${name} Internal IPv6 address`,
                 region: networkConfig.subnet[config.subnet].region,
-                addressType: 'EXTERNAL',
+                addressType: 'INTERNAL',
                 ipVersion: 'IPV6',
                 ipv6EndpointType: 'VM',
-                networkTier: config.tier ?? 'STANDARD',
                 subnetwork: subnets[config.subnet].id,
+                purpose: 'GCE_ENDPOINT',
                 labels: commonLabels,
               },
               {
-                dependsOn: [subnets[config.subnet], networkTier],
+                dependsOn: [subnets[config.subnet]],
                 ignoreChanges: ['users'],
               },
             )

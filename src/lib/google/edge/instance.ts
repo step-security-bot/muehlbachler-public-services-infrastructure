@@ -110,6 +110,9 @@ export const createEdgeInstance = (
       networkInterfaces: [
         {
           network: network.resource.id,
+          networkIp:
+            network.internalIPs[edgeInstanceConfig.network.internalIp].ipv4
+              .address,
           accessConfigs: [
             {
               networkTier:

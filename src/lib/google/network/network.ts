@@ -5,6 +5,7 @@ import { environment, globalName, networkConfig } from '../../configuration';
 
 import { createExternalIPs } from './external_ip';
 import { createDefaultFirewalls } from './firewall';
+import { createInternalIPs } from './internal_ip';
 
 /**
  * Creates the networks.
@@ -61,11 +62,13 @@ export const createNetwork = (): NetworkData => {
   );
 
   const externalIPs = createExternalIPs(subnets, networkTier);
+  const internalIPs = createInternalIPs(subnets);
 
   const networkData = {
     resource: network,
     subnets: subnets,
     externalIPs: externalIPs,
+    internalIPs: internalIPs,
   };
 
   createDefaultFirewalls(networkData);

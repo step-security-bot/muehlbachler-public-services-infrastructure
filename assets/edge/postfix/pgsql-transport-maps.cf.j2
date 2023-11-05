@@ -5,5 +5,5 @@ user = {{ database.user }}
 password = "{{ database.password }}"
 dbname = {{ database.database }}
 
-# forward to smtp:handler.simplelogin.{{ clusterDnsDomain }}:20381 for custom domain AND email domain
-query = SELECT 'smtp:handler.simplelogin.{{ clusterDnsDomain }}:20381' FROM custom_domain WHERE domain = '%s' AND verified=true UNION SELECT 'smtp:handler.simplelogin.{{ clusterDnsDomain }}:20381' FROM public_domain WHERE domain = '%s' UNION SELECT 'smtp:handler.simplelogin.{{ clusterDnsDomain }}:20381' WHERE '%s' LIKE '%%.{{ baseDomain }}' LIMIT 1;
+# forward to smtp:{{ handlerDomain }}:20381 for custom domain AND email domain
+query = SELECT 'smtp:{{ handlerDomain }}:20381' FROM custom_domain WHERE domain = '%s' AND verified=true UNION SELECT 'smtp:{{ handlerDomain }}:20381' FROM public_domain WHERE domain = '%s' UNION SELECT 'smtp:{{ handlerDomain }}:20381' WHERE '%s' LIKE '%%.{{ baseDomain }}' LIMIT 1;

@@ -16,5 +16,6 @@ export type EdgeInstanceConfig = {
 export type EdgeInstanceNetworkConfig = {
   readonly subnet: string;
   readonly externalIp: string;
+  readonly internalIp: string;
   readonly ptrRecords: boolean;
 };

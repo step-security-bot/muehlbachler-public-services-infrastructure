@@ -1,6 +1,6 @@
 import { Output } from '@pulumi/pulumi';
 
-import { ExternalIPData } from '../../model/network';
+import { NetworkIPData } from '../../model/network';
 import { globalName } from '../configuration';
 import { writeToDoppler } from '../util/doppler';
 
@@ -12,11 +12,13 @@ import { createDNSRecords } from './record';
 /**
  * Creates the SimpleLogin resources.
  *
- * @param {ExternalIPData} externalIp the external IP of the server
+ * @param {NetworkIPData} externalIp the external IP of the server
+ * @param {NetworkIPData} internalIp the internal IP of the server
  * @returns {Output<string>} the dkim public key
  */
 export const createSimpleloginResources = (
-  externalIp: ExternalIPData,
+  externalIp: NetworkIPData,
+  internalIp: NetworkIPData,
 ): Output<string> => {
   createFlaskSecret();
 
@@ -27,7 +29,7 @@ export const createSimpleloginResources = (
 
   writeToDoppler(
     'PUBLIC_SERVICES_MAIL_RELAY_POSTFIX_SERVER',
-    externalIp.ipv4.address,
+    internalIp.ipv4.address,
     `${globalName}-cluster-mail-relay`,
   );
 

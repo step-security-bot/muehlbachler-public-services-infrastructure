@@ -21,7 +21,6 @@ DEBIAN_FRONTEND=noninteractive apt-get install --yes postfix postfix-pgsql postf
 gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/postfix/** /etc/postfix/
 postmap hash:/etc/postfix/sasl_passwd
 
-# FIXME: enable
 echo "[postfix] enabling and starting..."
-#systemctl enable --now postfix
-#systemctl restart postfix
+systemctl enable --now postfix
+systemctl restart postfix

@@ -45,6 +45,7 @@ config:
     machineType: e2-micro
     network:
       externalIp: edge
+      internalIp: edge
       ptrRecords: false
       subnet: edge
     sourceImage: debian-cloud/debian-12
@@ -93,6 +94,10 @@ config:
         ipv6: false
         subnet: edge
         tier: STANDARD
+    internalIp:
+      edge:
+        ipv6: false
+        subnet: edge
     subnet:
       cluster:
         cidr: 10.100.0.0/16

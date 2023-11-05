@@ -78,7 +78,7 @@ export const createPostfixResources = (
         Output.create(
           renderTemplate('./assets/edge/postfix/pgsql-transport-maps.cf.j2', {
             database: db,
-            clusterDnsDomain: `${environment}.${globalName}.cluster`,
+            handlerDomain: `simplelogin-handler.simplelogin.svc.${environment}.${globalName}.cluster`,
             baseDomain: mailConfig.domain,
           }),
         ),

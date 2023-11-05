@@ -31,6 +31,7 @@ export = async () => {
   // simplelogin resources
   const dkimPublicKey = createSimpleloginResources(
     network.externalIPs[edgeInstanceConfig.network.externalIp],
+    network.internalIPs[edgeInstanceConfig.network.internalIp],
   );
 
   // edge instance

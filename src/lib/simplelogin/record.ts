@@ -1,17 +1,17 @@
 import { interpolate, Output } from '@pulumi/pulumi';
 
-import { ExternalIPData } from '../../model/network';
+import { NetworkIPData } from '../../model/network';
 import { mailConfig } from '../configuration';
 import { createRecord } from '../google/dns/record';
 
 /**
  * Creates the base DNS records.
  *
- * @param {ExternalIPData} externalIp the external IP of the mail server
+ * @param {NetworkIPData} externalIp the external IP of the mail server
  * @param {Output<string>} dkimPublicKey the public DKIM key
  */
 export const createDNSRecords = (
-  externalIp: ExternalIPData,
+  externalIp: NetworkIPData,
   dkimPublicKey: Output<string>,
 ) => {
   const mailserverDomain = `relay.${mailConfig.domain}`;
