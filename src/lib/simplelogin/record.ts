@@ -46,6 +46,28 @@ export const createDNSRecords = (
     {},
   );
   createRecord(
+    `dkim02._domainkey.${mailConfig.domain}`,
+    mailConfig.zoneId,
+    'TXT',
+    [
+      interpolate`v=DKIM1; k=rsa; p=${dkimPublicKey}`.apply((entry) =>
+        splitByLength(entry, 'TXT'),
+      ),
+    ],
+    {},
+  );
+  createRecord(
+    `dkim03._domainkey.${mailConfig.domain}`,
+    mailConfig.zoneId,
+    'TXT',
+    [
+      interpolate`v=DKIM1; k=rsa; p=${dkimPublicKey}`.apply((entry) =>
+        splitByLength(entry, 'TXT'),
+      ),
+    ],
+    {},
+  );
+  createRecord(
     mailConfig.domain,
     mailConfig.zoneId,
     'TXT',
@@ -105,6 +127,20 @@ export const createMailDNSRecords = (
       mailConfig.zoneId,
       'CNAME',
       [`dkim._domainkey.${mailConfig.domain}.`],
+      {},
+    );
+    createRecord(
+      `dkim02._domainkey.${domain}`,
+      mailConfig.zoneId,
+      'CNAME',
+      [`dkim02._domainkey.${mailConfig.domain}.`],
+      {},
+    );
+    createRecord(
+      `dkim03._domainkey.${domain}`,
+      mailConfig.zoneId,
+      'CNAME',
+      [`dkim03._domainkey.${mailConfig.domain}.`],
       {},
     );
 
