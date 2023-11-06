@@ -14,6 +14,7 @@ export const defaultTtl = 300;
  * @param {string} type the record's type
  * @param {readonly string[] | readonly Output<string>[]} records the records to apply
  * @param {number} ttl the TTL to set
+ * @returns {gcp.dns.RecordSet} the record
  */
 export const createRecord = (
   domain: string,
@@ -25,7 +26,7 @@ export const createRecord = (
   }: {
     readonly ttl?: number;
   },
-) => {
+): gcp.dns.RecordSet =>
   new gcp.dns.RecordSet(
     `dns-record-${type}-${sanitizeText(domain)}`,
     {
@@ -38,4 +39,3 @@ export const createRecord = (
     },
     {},
   );
-};

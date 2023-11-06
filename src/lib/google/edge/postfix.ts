@@ -4,6 +4,7 @@ import { all, Output } from '@pulumi/pulumi';
 import { StringMap } from '../../../model/map';
 import { PostgresqlUserData } from '../../../model/postgresql';
 import {
+  edgeInstanceConfig,
   environment,
   globalName,
   mailConfig,
@@ -103,6 +104,7 @@ export const createPostfixResources = (
       Output.create(
         renderTemplate('./assets/edge/postfix/main.cf.j2', {
           baseDomain: mailConfig.domain,
+          hostname: edgeInstanceConfig.hostname,
           mailRelay: mailConfig.relay,
         }),
       ),

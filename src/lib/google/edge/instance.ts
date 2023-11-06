@@ -1,5 +1,5 @@
 import * as gcp from '@pulumi/gcp';
-import { all, Output } from '@pulumi/pulumi';
+import { all, Output, Resource } from '@pulumi/pulumi';
 
 import { NetworkData } from '../../../model/network';
 import {
@@ -12,6 +12,8 @@ import {
 import { BUCKET_PATH } from '../../util/storage';
 import { renderTemplate } from '../../util/template';
 import { createServiceAccount } from '../iam/service_account';
+
+import { createEdgePtrRecord } from './record';
 
 export const INSTANCE_NAME = `${globalName}-edge-${environment}`;
 
@@ -99,6 +101,11 @@ export const createEdgeInstance = (
     },
   );
 
+  const edgeRecords = edgeInstanceConfig.network.ptrRecords
+    ? createEdgePtrRecord(
+        network.externalIPs[edgeInstanceConfig.network.externalIp],
+      )
+    : [];
   new gcp.compute.InstanceFromTemplate(
     'gcp-instance-edge-instance',
     {
@@ -119,7 +126,7 @@ export const createEdgeInstance = (
                 network.externalIPs[edgeInstanceConfig.network.externalIp].ipv4
                   .networkTier,
               publicPtrDomainName: edgeInstanceConfig.network.ptrRecords
-                ? edgeInstanceConfig.hostname
+                ? `${edgeInstanceConfig.hostname}.`
                 : undefined,
               natIp:
                 network.externalIPs[edgeInstanceConfig.network.externalIp].ipv4
@@ -134,7 +141,7 @@ export const createEdgeInstance = (
                     network.externalIPs[edgeInstanceConfig.network.externalIp]
                       ?.ipv6?.networkTier ?? 'STANDARD',
                   publicPtrDomainName: edgeInstanceConfig.network.ptrRecords
-                    ? edgeInstanceConfig.hostname
+                    ? `${edgeInstanceConfig.hostname}.`
                     : undefined,
                   externalIpv6:
                     network.externalIPs[edgeInstanceConfig.network.externalIp]
@@ -152,7 +159,9 @@ export const createEdgeInstance = (
     },
     {
       deleteBeforeReplace: true,
-      dependsOn: Output.create(configs.map((file) => file)),
+      dependsOn: configs
+        .map((file) => file as Output<Resource>)
+        .concat(edgeRecords.map((record) => Output.create(record))),
       ignoreChanges: ['metadata', 'metadataFingerprint'],
     },
   );

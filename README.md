@@ -92,7 +92,8 @@ edgeInstance:
   network:
     subnet: the subnet name for the instance
     externalIp: the external IP address name
-    ptrRecords: should pointer records be set? (attention: the ownership must be verified!)
+    ptrRecords: should pointer records be set?
+    zoneId: the Google Cloud DNS zone id for the A/AAAA records to set for this hostname
 ```
 
 ### Network

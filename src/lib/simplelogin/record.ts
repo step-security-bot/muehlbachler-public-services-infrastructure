@@ -4,6 +4,8 @@ import { NetworkIPData } from '../../model/network';
 import { mailConfig } from '../configuration';
 import { createRecord } from '../google/dns/record';
 
+const MAILSERVER_DOMAIN = `relay.${mailConfig.domain}`;
+
 /**
  * Creates the base DNS records.
  *
@@ -14,11 +16,9 @@ export const createDNSRecords = (
   externalIp: NetworkIPData,
   dkimPublicKey: Output<string>,
 ) => {
-  const mailserverDomain = `relay.${mailConfig.domain}`;
-
   // server A/AAAA records
   createRecord(
-    mailserverDomain,
+    MAILSERVER_DOMAIN,
     mailConfig.zoneId,
     'A',
     [externalIp.ipv4.address],
@@ -26,7 +26,7 @@ export const createDNSRecords = (
   );
   if (externalIp.ipv6 != undefined) {
     createRecord(
-      mailserverDomain,
+      MAILSERVER_DOMAIN,
       mailConfig.zoneId,
       'AAAA',
       [externalIp.ipv6?.address ?? Output.create('')],
@@ -34,14 +34,6 @@ export const createDNSRecords = (
     );
   }
 
-  // DKIM and SPF
-  createRecord(
-    `_adsp._domainkey.${mailConfig.domain}`,
-    mailConfig.zoneId,
-    'TXT',
-    ['dkim=all'],
-    {},
-  );
   createRecord(
     `dkim._domainkey.${mailConfig.domain}`,
     mailConfig.zoneId,
@@ -54,31 +46,76 @@ export const createDNSRecords = (
     {},
   );
   createRecord(
-    `_dmarc.${mailConfig.domain}`,
-    mailConfig.zoneId,
-    'TXT',
-    [splitByLength('v=DMARC1; p=quarantine; pct=100; adkim=s; aspf=s', 'TXT')],
-    {},
-  );
-  createRecord(
-    mailConfig.domain,
-    mailConfig.zoneId,
-    'MX',
-    [`10 ${mailserverDomain}.`, `20 ${mailserverDomain}.`],
-    {},
-  );
-  createRecord(
     mailConfig.domain,
     mailConfig.zoneId,
     'TXT',
     [
       splitByLength(
-        `v=spf1 mx a:${mailserverDomain} a:${mailConfig.domain} include:${mailConfig.spfInclude} ~all`,
+        `v=spf1 mx a:${MAILSERVER_DOMAIN} a:${mailConfig.domain} include:${mailConfig.spfInclude} ~all`,
         'TXT',
       ),
     ],
     {},
   );
+
+  createMailDNSRecords(mailConfig.domain, { isSubdomain: false });
+  createMailDNSRecords(MAILSERVER_DOMAIN, { isSubdomain: true });
+};
+
+/**
+ * Creates the mail DNS records.
+ *
+ * @param {string} domain the domain
+ * @param {boolean} isSubdomain provision a subdomain (default: true)
+ */
+export const createMailDNSRecords = (
+  domain: string,
+  {
+    isSubdomain = true,
+  }: {
+    readonly isSubdomain?: boolean;
+  },
+) => {
+  createRecord(
+    `_adsp._domainkey.${domain}`,
+    mailConfig.zoneId,
+    'TXT',
+    ['dkim=all'],
+    {},
+  );
+  createRecord(
+    `_dmarc.${domain}`,
+    mailConfig.zoneId,
+    'TXT',
+    [splitByLength('v=DMARC1; p=quarantine; pct=100; adkim=s; aspf=s', 'TXT')],
+    {},
+  );
+
+  createRecord(
+    domain,
+    mailConfig.zoneId,
+    'MX',
+    [`10 ${MAILSERVER_DOMAIN}.`, `20 ${MAILSERVER_DOMAIN}.`],
+    {},
+  );
+
+  if (isSubdomain) {
+    createRecord(
+      `dkim._domainkey.${domain}`,
+      mailConfig.zoneId,
+      'CNAME',
+      [`dkim._domainkey.${mailConfig.domain}.`],
+      {},
+    );
+
+    createRecord(
+      domain,
+      mailConfig.zoneId,
+      'TXT',
+      [splitByLength(`v=spf1 include:${mailConfig.domain} -all`, 'TXT')],
+      {},
+    );
+  }
 };
 
 /**

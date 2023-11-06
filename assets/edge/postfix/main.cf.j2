@@ -1,5 +1,5 @@
 # POSTFIX config file, adapted for SimpleLogin
-smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+smtpd_banner = $myhostname ESMTP
 biff = no
 
 # appending .domain is the MUA's job.
@@ -25,11 +25,11 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 # information on enabling SSL in the smtp client.
 
 alias_maps = hash:/etc/aliases
-mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 10.0.0.0/24
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 10.0.0.0/8
 
 # Set your domain here
-mydestination = localhost.localdomain, localhost
-myhostname = {{ baseDomain }}
+mydestination = 
+myhostname = {{ hostname }}
 mydomain = {{ baseDomain }}
 myorigin = {{ baseDomain }}
 relay_domains = pgsql:/etc/postfix/pgsql-relay-domains.cf
@@ -50,6 +50,7 @@ smtpd_sender_restrictions =
     reject_non_fqdn_sender,
     reject_unknown_sender_domain,
     permit
+smtpd_peername_lookup = no
 
 # Recipient restrictions:
 smtpd_recipient_restrictions =

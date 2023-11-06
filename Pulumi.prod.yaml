@@ -46,8 +46,9 @@ config:
     network:
       externalIp: edge
       internalIp: edge
-      ptrRecords: false
+      ptrRecords: true
       subnet: edge
+      zoneId: muehlbachler-io
     sourceImage: debian-cloud/debian-12
     zone: europe-west4-a
   muehlbachler-public-services:google:
@@ -76,7 +77,7 @@ config:
           port: 20381
           service: simplelogin-handler.simplelogin
       smtp:
-        exposed: false
+        exposed: true
         port: 25
   muehlbachler-public-services:mail:
     domain: email.muehlbachler.io

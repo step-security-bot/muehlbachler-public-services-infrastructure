@@ -2,7 +2,7 @@
 
 hosts = {{ database.host }}:{{ database.port }}
 user = {{ database.user }}
-password = "{{ database.password }}"
+password = {{ database.password }}
 dbname = {{ database.database }}
 
 # forward to smtp:{{ handlerDomain }}:20381 for custom domain AND email domain
