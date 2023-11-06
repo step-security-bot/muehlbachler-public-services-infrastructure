@@ -4,14 +4,16 @@ import { all, Output } from '@pulumi/pulumi';
 import { StringMap } from '../../../model/map';
 import { PostgresqlUserData } from '../../../model/postgresql';
 import {
+  bucketId,
   edgeInstanceConfig,
   environment,
   globalName,
+  googleConfig,
   mailConfig,
   postgresqlConfig,
 } from '../../configuration';
 import { readFileContents } from '../../util/file';
-import { writeFilePulumiAndUploadToS3 } from '../../util/storage';
+import { BUCKET_PATH, writeFilePulumiAndUploadToS3 } from '../../util/storage';
 import { renderTemplate } from '../../util/template';
 
 /**
@@ -110,6 +112,31 @@ export const createPostfixResources = (
       ),
       {
         s3SubPath: 'postfix/',
+      },
+    ),
+    writeFilePulumiAndUploadToS3(
+      'reload-acme-cert',
+      Output.create(
+        renderTemplate('./assets/edge/acme/reload-acme-cert.j2', {
+          bucket: {
+            id: bucketId,
+            path: BUCKET_PATH,
+          },
+        }),
+      ),
+      {
+        s3SubPath: 'acme/',
+      },
+    ),
+    writeFilePulumiAndUploadToS3(
+      'cron',
+      Output.create(
+        renderTemplate('./assets/edge/acme/cron.j2', {
+          project: googleConfig.dnsProject,
+        }),
+      ),
+      {
+        s3SubPath: 'acme/',
       },
     ),
   ];

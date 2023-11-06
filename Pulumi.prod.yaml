@@ -80,6 +80,7 @@ config:
         exposed: true
         port: 25
   muehlbachler-public-services:mail:
+    acmeEmail: noreply@muehlbachler.xyz
     domain: email.muehlbachler.io
     relay:
       host: mail.email.muehlbachler.io

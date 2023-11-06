@@ -1,5 +1,5 @@
 import * as gcp from '@pulumi/gcp';
-import { all, Output, Resource } from '@pulumi/pulumi';
+import { all, interpolate, Output, Resource } from '@pulumi/pulumi';
 
 import { NetworkData } from '../../../model/network';
 import {
@@ -8,9 +8,12 @@ import {
   edgeInstanceConfig,
   environment,
   globalName,
+  googleConfig,
+  mailConfig,
 } from '../../configuration';
 import { BUCKET_PATH } from '../../util/storage';
 import { renderTemplate } from '../../util/template';
+import { createIAMMember } from '../iam/member';
 import { createServiceAccount } from '../iam/service_account';
 
 import { createEdgePtrRecord } from './record';
@@ -32,8 +35,14 @@ export const createEdgeInstance = (
   );
 
   const serviceAccount = createServiceAccount('edge-ingress', {
-    roles: ['roles/storage.objectViewer'],
+    roles: ['roles/storage.objectUser'],
   });
+  createIAMMember(
+    'edge-ingress',
+    interpolate`serviceAccount:${serviceAccount.email}`,
+    ['roles/dns.admin'],
+    { project: googleConfig.dnsProject },
+  );
 
   const subnetworkId = network.subnets[edgeInstanceConfig.network.subnet].id;
   const hasIPv6 =
@@ -80,6 +89,11 @@ export const createEdgeInstance = (
           bucket: {
             id: bucketId,
             path: BUCKET_PATH,
+          },
+          acme: {
+            email: mailConfig.acmeEmail,
+            domain: mailConfig.domain,
+            project: googleConfig.dnsProject,
           },
           hash: md5ConfigHash,
         }),

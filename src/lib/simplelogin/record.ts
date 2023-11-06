@@ -4,7 +4,7 @@ import { NetworkIPData } from '../../model/network';
 import { mailConfig } from '../configuration';
 import { createRecord } from '../google/dns/record';
 
-const MAILSERVER_DOMAIN = `relay.${mailConfig.domain}`;
+export const MAILSERVER_DOMAIN = `relay.${mailConfig.domain}`;
 
 /**
  * Creates the base DNS records.

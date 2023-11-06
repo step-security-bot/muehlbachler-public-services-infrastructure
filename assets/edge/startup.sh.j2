@@ -15,6 +15,48 @@ echo "[haproxy] enabling and starting..."
 systemctl enable --now haproxy
 systemctl restart haproxy
 
+# acme
+mkdir -p /ssl
+
+gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/acme/cron /etc/cron.d/acme
+gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/acme/reload-acme-cert /usr/bin/reload-acme-cert
+chmod +x /usr/bin/reload-acme-cert
+
+curl https://get.acme.sh | sh -s email={{ acme.email }} \
+      --home /var/acme/home \
+      --config-home /var/acme/config \
+      --no-cron
+/var/acme/home/acme.sh \
+      --upgrade \
+      --auto-upgrade \
+      --home /var/acme/home \
+      --config-home /var/acme/config \
+      --no-cron
+
+gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/acme/config/** /var/acme/config/ || true
+gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/acme/ssl/** /ssl/ || true
+
+CLOUDSDK_CORE_PROJECT={{ acme.project }} /var/acme/home/acme.sh \
+      --issue \
+      --dns dns_gcloud \
+      -d {{ acme.domain }} \
+      -d *.{{ acme.domain }} \
+      --home /var/acme/home \
+      --config-home /var/acme/config \
+      --no-cron
+/var/acme/home/acme.sh \
+      --install-cert \
+      -d {{ acme.domain }} \
+      --cert-file /ssl/cert.pem  \
+      --key-file /ssl/key.pem  \
+      --fullchain-file /ssl/fullchain.pem \
+      --reloadcmd "/usr/bin/reload-acme-cert" \
+      --home /var/acme/home \
+      --config-home /var/acme/config \
+      --no-cron
+
+systemctl restart cron
+
 # postfix
 echo "[postfix] installing and configuring..."
 DEBIAN_FRONTEND=noninteractive apt-get install --yes postfix postfix-pgsql postfix-pcre libsasl2-modules postgresql-client

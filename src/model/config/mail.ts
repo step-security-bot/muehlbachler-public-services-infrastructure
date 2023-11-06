@@ -5,6 +5,7 @@ export type MailConfig = {
   readonly domain: string;
   readonly zoneId: string;
   readonly spfInclude: string;
+  readonly acmeEmail: string;
   readonly relay: MailRelayConfig;
 };
 

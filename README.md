@@ -154,6 +154,7 @@ mail:
   domain: the base domain for the relay
   zoneId: the Google Cloud zone of the instance
   spfInclude: additional include entry for the SPF record
+  acmeEmail: the email to use for issuing acme certificates
   relay:
     host: the host of the outgoing mail relay
     port: the port of the outgoing mail relay
