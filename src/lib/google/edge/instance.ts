@@ -128,6 +128,7 @@ export const createEdgeInstance = (
       desiredStatus: 'RUNNING',
       hostname: edgeInstanceConfig.hostname,
       zone: edgeInstanceConfig.zone,
+      project: instanceTemplate.project,
       networkInterfaces: [
         {
           network: network.resource.id,

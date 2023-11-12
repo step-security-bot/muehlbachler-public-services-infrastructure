@@ -27,6 +27,7 @@ export const createCluster = (network: NetworkData): ClusterData => {
     {
       name: CLUSTER_NAME,
       description: `${globalName}/${environment}: cluster`,
+      deletionProtection: true,
       addonsConfig: {
         horizontalPodAutoscaling: {
           disabled: false,

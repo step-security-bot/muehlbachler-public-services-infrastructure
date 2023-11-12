@@ -69,6 +69,7 @@ export const createNodePools = (cluster: gcp.container.Cluster) => {
           },
           {
             dependsOn: [cluster],
+            ignoreChanges: ['nodeConfig.effectiveTaints'],
           },
         ),
     );

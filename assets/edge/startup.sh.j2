@@ -1,10 +1,13 @@
 #!/bin/bash
 
+
 # config hash: {{ hash }}
 
-# system
+
+# system update
 echo "[system] updating apt cache..."
 apt-get update
+
 
 # haproxy
 echo "[haproxy] installing and configuring..."
@@ -14,6 +17,7 @@ gcloud storage cp gs://{{ bucket.id }}/{{ bucket.path }}/haproxy/** /etc/haproxy
 echo "[haproxy] enabling and starting..."
 systemctl enable --now haproxy
 systemctl restart haproxy
+
 
 # acme
 mkdir -p /ssl
@@ -56,6 +60,7 @@ CLOUDSDK_CORE_PROJECT={{ acme.project }} /var/acme/home/acme.sh \
       --no-cron
 
 systemctl restart cron
+
 
 # postfix
 echo "[postfix] installing and configuring..."
