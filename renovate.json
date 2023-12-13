@@ -12,8 +12,7 @@
     ],
     "enabledManagers": [
         "github-actions",
-        "npm",
-        "flux"
+        "npm"
     ],
     "github-actions": {
         "fileMatch": [
@@ -27,10 +26,5 @@
         ],
         "rollbackPrs": true,
         "versioning": "npm"
-    },
-    "flux": {
-        "fileMatch": [
-            "(^|/)cluster-bootstrap/.+\\.ya?ml$"
-        ]
     }
 }
