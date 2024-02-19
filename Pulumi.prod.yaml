@@ -34,10 +34,8 @@ config:
     zone: europe-west4-a
   muehlbachler-public-services:database:
     database:
-      authentik: authentik
       simplelogin: simplelogin
     users:
-      - authentik
       - simplelogin
   muehlbachler-public-services:edgeInstance:
     diskSize: 10
