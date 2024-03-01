@@ -41,10 +41,10 @@ patches:
         value:
           requests:
             cpu: 10m
-            memory: 112Mi
+            memory: 48Mi
           limits:
-            cpu: 1
-            memory: 768Mi
+            cpu: 250m
+            memory: 144Mi
     target:
       kind: Deployment
       name: helm-controller
@@ -58,11 +58,11 @@ patches:
         path: /spec/template/spec/containers/0/resources
         value:
           requests:
-            cpu: 5m
+            cpu: 10m
             memory: 64Mi
           limits:
             cpu: 250m
-            memory: 192Mi
+            memory: 160Mi
     target:
       kind: Deployment
       name: kustomize-controller
@@ -77,10 +77,10 @@ patches:
         value:
           requests:
             cpu: 5m
-            memory: 80Mi
+            memory: 48Mi
           limits:
-            cpu: 250m
-            memory: 256Mi
+            cpu: 150m
+            memory: 144Mi
     target:
       kind: Deployment
       name: source-controller
@@ -91,10 +91,10 @@ patches:
         value:
           requests:
             cpu: 3m
-            memory: 24Mi
+            memory: 32Mi
           limits:
             cpu: 100m
-            memory: 48Mi
+            memory: 64Mi
     target:
       kind: Deployment
       name: notification-controller
