@@ -40,7 +40,7 @@ patches:
         path: /spec/template/spec/containers/0/resources
         value:
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 224Mi
           limits:
             cpu: 250m
@@ -61,7 +61,7 @@ patches:
             cpu: 10m
             memory: 64Mi
           limits:
-            cpu: 250m
+            cpu: 150m
             memory: 160Mi
     target:
       kind: Deployment
@@ -79,7 +79,7 @@ patches:
             cpu: 5m
             memory: 48Mi
           limits:
-            cpu: 150m
+            cpu: 100m
             memory: 144Mi
     target:
       kind: Deployment
@@ -93,7 +93,7 @@ patches:
             cpu: 3m
             memory: 32Mi
           limits:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
     target:
       kind: Deployment
