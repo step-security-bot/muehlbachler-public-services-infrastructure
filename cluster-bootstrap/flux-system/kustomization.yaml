@@ -41,10 +41,10 @@ patches:
         value:
           requests:
             cpu: 10m
-            memory: 128Mi
+            memory: 224Mi
           limits:
             cpu: 250m
-            memory: 224Mi
+            memory: 320Mi
     target:
       kind: Deployment
       name: helm-controller
