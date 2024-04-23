@@ -109,6 +109,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - uses: jaxxstorm/action-install-gh-release@v1.11.0
+        with:
+          repo: k0sproject/k0sctl
+          extension-matching: disable
+          rename-to: k0sctl
+          chmod: 0755
+
       - uses: hashicorp/vault-action@v3
         id: import-secrets
         with:
