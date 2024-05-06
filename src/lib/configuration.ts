@@ -40,14 +40,6 @@ export const postgresqlConfig = sharedServicesStackAws.apply((output) => ({
   username: output.postgresql.username as string,
   password: output.postgresql.password as string,
 }));
-const sharedServicesStackMongoDb = sharedServicesStack.requireOutput('mongodb');
-export const mongodbClusterConfig = sharedServicesStackMongoDb.apply(
-  (output) => ({
-    clusterName: output.atlas.clusterName as string,
-    projectId: output.atlas.projectId as string,
-    endpoint: output.atlas.endpoint as string,
-  }),
-);
 
 export const globalName = 'public-services';
 export const globalShortName = 'pub-svcs';

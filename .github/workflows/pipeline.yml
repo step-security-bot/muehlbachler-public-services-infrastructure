@@ -46,8 +46,6 @@ jobs:
             github-muehlbachler-public-services-infrastructure/data/aws region | AWS_REGION ;
             github-muehlbachler-public-services-infrastructure/data/aws identity_role_arn | AWS_IDENTITY_ROLE_ARN ;
             github-muehlbachler-public-services-infrastructure/data/doppler token | DOPPLER_TOKEN ;
-            github-muehlbachler-public-services-infrastructure/data/mongodb-atlas public_key | MONGODB_ATLAS_PUBLIC_KEY ;
-            github-muehlbachler-public-services-infrastructure/data/mongodb-atlas private_key | MONGODB_ATLAS_PRIVATE_KEY ;
             github-muehlbachler-public-services-infrastructure/data/github token | GH_PAT_TOKEN ;
             github-muehlbachler-public-services-infrastructure/data/tailscale oauth_client_id | TS_OAUTH_CLIENT_ID ;
             github-muehlbachler-public-services-infrastructure/data/tailscale oauth_secret | TS_OAUTH_SECRET ;
@@ -133,8 +131,6 @@ jobs:
             github-muehlbachler-public-services-infrastructure/data/aws region | AWS_REGION ;
             github-muehlbachler-public-services-infrastructure/data/aws identity_role_arn | AWS_IDENTITY_ROLE_ARN ;
             github-muehlbachler-public-services-infrastructure/data/doppler token | DOPPLER_TOKEN ;
-            github-muehlbachler-public-services-infrastructure/data/mongodb-atlas public_key | MONGODB_ATLAS_PUBLIC_KEY ;
-            github-muehlbachler-public-services-infrastructure/data/mongodb-atlas private_key | MONGODB_ATLAS_PRIVATE_KEY ;
             github-muehlbachler-public-services-infrastructure/data/github token | GH_PAT_TOKEN ;
             github-muehlbachler-public-services-infrastructure/data/tailscale oauth_client_id | TS_OAUTH_CLIENT_ID ;
             github-muehlbachler-public-services-infrastructure/data/tailscale oauth_secret | TS_OAUTH_SECRET ;
