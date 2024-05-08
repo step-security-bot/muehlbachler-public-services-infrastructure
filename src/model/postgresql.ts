@@ -4,7 +4,7 @@ import { Output } from '@pulumi/pulumi';
 /**
  * Defines a PostgreSQL user.
  */
-export type PostgresqlUserData = {
+export interface PostgresqlUserData {
   readonly user: pg.Role;
   readonly password: Output<string>;
-};
+}
