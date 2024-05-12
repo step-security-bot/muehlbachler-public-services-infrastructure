@@ -12,7 +12,8 @@
     ],
     "enabledManagers": [
         "github-actions",
-        "npm"
+        "npm",
+        "regex"
     ],
     "github-actions": {
         "fileMatch": [
@@ -26,5 +27,19 @@
         ],
         "rollbackPrs": true,
         "versioning": "npm"
-    }
+    },
+    "customManagers": [
+        {
+            "customType": "regex",
+            "fileMatch": [
+                "(^|/)k0sctl\\.yml\\.j2$"
+            ],
+            "matchStrings": [
+                "\\s+version:\\s+(?<currentValue>\\S+)"
+            ],
+            "depNameTemplate": "k0sproject/k0s",
+            "versioningTemplate": "semver-coerced",
+            "datasourceTemplate": "github-releases"
+        }
+    ]
 }
