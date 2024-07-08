@@ -1,7 +1,6 @@
 import { all, Output } from '@pulumi/pulumi';
 
 import { globalName } from '../configuration';
-import { writeToDoppler } from '../util/doppler/secret';
 import { createRSAkey } from '../util/rsa_key';
 import { writeToVault } from '../util/vault/secret';
 
@@ -12,17 +11,6 @@ import { writeToVault } from '../util/vault/secret';
  */
 export const createDKIMKey = (): Output<string> => {
   const dkimKey = createRSAkey('dkim-mail-relay', { rsaBits: 2048 });
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_DKIM_PRIVATE_KEY',
-    dkimKey.privateKeyPem,
-    `${globalName}-cluster-mail-relay`,
-  );
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_DKIM_PUBLIC_KEY',
-    dkimKey.publicKeyPem,
-    `${globalName}-cluster-mail-relay`,
-  );
 
   writeToVault(
     'mail-relay-dkim',

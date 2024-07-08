@@ -105,6 +105,5 @@ config:
     networkBridge: vmbr10
     storagePool: local-zfs
   muehlbachler-public-services:secretStores:
-    doppler: false
     vault: true
   muehlbachler-public-services:username: proxmox

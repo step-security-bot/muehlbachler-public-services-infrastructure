@@ -5,7 +5,6 @@ import { createAccessKey } from '../aws/iam/key';
 import { createAWSUser } from '../aws/iam/user';
 import { createS3Bucket } from '../aws/storage/bucket';
 import { awsDefaultRegion, commonLabels, globalName } from '../configuration';
-import { writeToDoppler } from '../util/doppler/secret';
 import { writeToVault } from '../util/vault/secret';
 
 /**
@@ -15,12 +14,6 @@ export const createAWSResources = (): void => {
   const region = aws.config.region ?? awsDefaultRegion;
   const bucket = createBucket();
   const key = bucket.arn.apply((arn) => createUser(arn));
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_AWS_REGION',
-    Output.create(region),
-    `${globalName}-cluster-mail-relay`,
-  );
 
   writeToVault(
     'simplelogin-aws',
@@ -42,17 +35,7 @@ export const createAWSResources = (): void => {
  *
  * @returns {aws.s3.Bucket} the bucket
  */
-const createBucket = (): aws.s3.Bucket => {
-  const bucket = createS3Bucket('simplelogin');
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_AWS_BUCKET',
-    bucket.bucket,
-    `${globalName}-cluster-mail-relay`,
-  );
-
-  return bucket;
-};
+const createBucket = (): aws.s3.Bucket => createS3Bucket('simplelogin');
 
 /**
  * Creates the SimpleLogin AWS user.
@@ -83,18 +66,6 @@ const createUser = (bucketArn: string): Output<aws.iam.AccessKey> => {
       ),
     ],
   });
-  const key = user.name.apply((name) => createAccessKey(name, user));
 
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_AWS_ACCESS_KEY_ID',
-    key.id,
-    `${globalName}-cluster-mail-relay`,
-  );
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_AWS_SECRET_ACCESS_KEY',
-    key.secret,
-    `${globalName}-cluster-mail-relay`,
-  );
-
-  return key;
+  return user.name.apply((name) => createAccessKey(name, user));
 };

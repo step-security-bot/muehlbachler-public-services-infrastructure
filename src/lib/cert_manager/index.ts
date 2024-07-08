@@ -2,7 +2,6 @@ import { interpolate } from '@pulumi/pulumi';
 
 import { environment, gcpConfig, globalName } from '../configuration';
 import { createIAMMember } from '../google/iam/member';
-import { writeToDoppler } from '../util/doppler/secret';
 import { createGCPServiceAccountAndKey } from '../util/google/service_account_user';
 import { writeToVault } from '../util/vault/secret';
 
@@ -19,12 +18,6 @@ export const createCertManagerResources = () => {
     {
       project: gcpConfig.dnsProject,
     },
-  );
-
-  writeToDoppler(
-    'GCP_CREDENTIALS',
-    iam.key.privateKey,
-    `${globalName}-cluster-cert-manager`,
   );
 
   writeToVault(

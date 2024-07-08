@@ -42,7 +42,6 @@ To successfully run, and configure the Pulumi plugins, you need to set a list of
 - `CLOUDSDK_CORE_PROJECT`: the Google Cloud (GCP) project
 - `CLOUDSDK_COMPUTE_REGION` the Google Cloud (GCP) region
 - `GOOGLE_APPLICATION_CREDENTIALS`: reference to a file containing the Google Cloud (GCP) service account credentials
-- `DOPPLER_TOKEN`: the token to access [Doppler](https://www.doppler.com) for secrets
 - `GITHUB_TOKEN`: the token to interact with GitHub
 
 ---

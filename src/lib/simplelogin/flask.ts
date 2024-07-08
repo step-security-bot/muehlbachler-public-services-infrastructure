@@ -1,5 +1,4 @@
 import { globalName } from '../configuration';
-import { writeToDoppler } from '../util/doppler/secret';
 import { createRandomPassword } from '../util/random';
 import { writeToVault } from '../util/vault/secret';
 
@@ -11,12 +10,6 @@ export const createFlaskSecret = (): void => {
     length: 32,
     special: false,
   });
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_FLASK_SECRET',
-    flaskSecret.password,
-    `${globalName}-cluster-mail-relay`,
-  );
 
   writeToVault(
     'simplelogin-flask-secret',

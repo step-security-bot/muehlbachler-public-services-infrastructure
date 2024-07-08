@@ -1,7 +1,6 @@
 import { Output } from '@pulumi/pulumi';
 
 import { globalName, mailConfig } from '../configuration';
-import { writeToDoppler } from '../util/doppler/secret';
 import { writeToVault } from '../util/vault/secret';
 
 import { createAWSResources } from './aws';
@@ -21,12 +20,6 @@ export const createSimpleloginResources = (): Output<string> => {
 
   const dkimKey = createDKIMKey();
   createDNSRecords(dkimKey);
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_MAIL_RELAY_POSTFIX_SERVER',
-    Output.create(mailConfig.server.ipv4Address),
-    `${globalName}-cluster-mail-relay`,
-  );
 
   writeToVault(
     'mail-relay-postfix-server',

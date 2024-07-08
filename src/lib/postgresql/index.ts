@@ -4,7 +4,6 @@ import { all } from '@pulumi/pulumi';
 import { StringMap } from '../../model/map';
 import { PostgresqlUserData } from '../../model/postgresql';
 import { globalName, postgresqlConfig } from '../configuration';
-import { writeToDoppler } from '../util/doppler/secret';
 import { writeToVault } from '../util/vault/secret';
 
 import { createDatabases } from './database';
@@ -26,18 +25,6 @@ export const createPostgresql = (): StringMap<PostgresqlUserData> => {
       superuser: false,
     },
     {},
-  );
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_CLUSTER_POSTGRESQL_HOST',
-    postgresqlConfig.address,
-    `${globalName}-cluster-database`,
-  );
-
-  writeToDoppler(
-    'PUBLIC_SERVICES_CLUSTER_POSTGRESQL_PORT',
-    postgresqlConfig.port.apply((port) => port.toString()),
-    `${globalName}-cluster-database`,
   );
 
   writeToVault(
