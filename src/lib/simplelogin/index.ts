@@ -1,6 +1,8 @@
-import { Output } from '@pulumi/pulumi';
+import { all, Output } from '@pulumi/pulumi';
 
-import { globalName, mailConfig } from '../configuration';
+import { StringMap } from '../../model/map';
+import { PostgresqlUserData } from '../../model/postgresql';
+import { globalName, mailConfig, postgresqlConfig } from '../configuration';
 import { writeToVault } from '../util/vault/secret';
 
 import { createAWSResources } from './aws';
@@ -11,9 +13,12 @@ import { createDNSRecords } from './record';
 /**
  * Creates the SimpleLogin resources.
  *
+ * @param {StringMap<PostgresqlUserData>} postgresqlUsers a map containing users and their passwords
  * @returns {Output<string>} the dkim public key
  */
-export const createSimpleloginResources = (): Output<string> => {
+export const createSimpleloginResources = (
+  postgresqlUsers: StringMap<PostgresqlUserData>,
+): Output<string> => {
   createFlaskSecret();
 
   createAWSResources();
@@ -21,9 +26,21 @@ export const createSimpleloginResources = (): Output<string> => {
   const dkimKey = createDKIMKey();
   createDNSRecords(dkimKey);
 
+  all([
+    postgresqlUsers['simplelogin'].password,
+    postgresqlConfig.address,
+    postgresqlConfig.port,
+  ]).apply(([password, address, port]) => ({
+    host: address,
+    port: port,
+    database: 'simplelogin',
+    user: 'simplelogin',
+    password: password,
+  }));
+
   writeToVault(
     'mail-relay-postfix-server',
-    Output.create(JSON.stringify({ ipv4: mailConfig.server.ipv4Address })),
+    Output.create(JSON.stringify({ ipv4: mailConfig.relayServer })),
     `kubernetes-${globalName}-cluster`,
   );
 

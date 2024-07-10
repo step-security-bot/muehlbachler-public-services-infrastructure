@@ -68,6 +68,7 @@ config:
         secure: AAABADVxL1RJyz1yZxJo7JKvv/GVoXPs3nFSohYX/Zwsxs7wSjmpCDVOLvLxqz42xJ50dzJMJH4=
       port: 587
       username: daemon@email.muehlbachler.io
+    relayServer: 10.20.0.10
     server:
       cpu: 1
       diskSize: 8

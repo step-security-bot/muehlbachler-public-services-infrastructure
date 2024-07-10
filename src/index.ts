@@ -19,7 +19,6 @@ import {
 } from './lib/configuration';
 import { createExternalDNSResources } from './lib/external_dns';
 import { createFluxResources } from './lib/flux';
-import { createMailResources } from './lib/mail';
 import { createPostgresql } from './lib/postgresql';
 import { createSimpleloginResources } from './lib/simplelogin';
 import { createDir } from './lib/util/create_dir';
@@ -46,22 +45,12 @@ export = async () => {
   const postgresqlUsers = createPostgresql();
 
   // simplelogin resources
-  const dkimPublicKey = createSimpleloginResources();
+  const dkimPublicKey = createSimpleloginResources(postgresqlUsers);
 
   // // Kubernetes cloud resources
   createExternalDNSResources();
   createCertManagerResources();
   createVeleroResources();
-
-  // mail server
-  all([userPassword.password, sshKey.publicKeyOpenssh]).apply(
-    ([userPasswordPlain, sshPublicKey]) =>
-      createMailResources(
-        userPasswordPlain,
-        sshPublicKey.trim(),
-        postgresqlUsers,
-      ),
-  );
 
   // cluster servers
   const clusterData = all([

@@ -11,6 +11,7 @@ export interface MailConfig {
   readonly relay: MailRelayConfig;
   readonly handler: string;
   readonly publicIPv4Address: string;
+  readonly relayServer: string;
   readonly server: ServerConfig;
 }
 
