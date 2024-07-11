@@ -1,3 +1,5 @@
+secretsprovider: gcpkms://projects/public-services-402810/locations/europe/keyRings/infrastructure-encryption/cryptoKeys/infrastructure-encryption
+encryptedkey: CiQAvgA/tzI/uiMTwl8epBxgBY7acj5WYYnmu8x68JLvMdmdFlASSQB99kCJvJ+xFW/9sREQAvBMQc2sOxhIJOrCl9j9sLD+Dv4SDueNNvrOnAZj7XOLENRK8Mf4EJ9KMhXql3JAK94ZPhXSMr/H93M=
 config:
   muehlbachler-public-services:backupBucketId: infrastructure-backups-87d6dbd4-4928-4cdc-8d9d-2b19417489d9
   muehlbachler-public-services:bucketId: infrastructure-assets-87d6dbd4-4928-4cdc-8d9d-2b19417489d9
@@ -42,10 +44,8 @@ config:
           - controller+worker
         startupOrder: 100
   muehlbachler-public-services:database:
-    database:
-      simplelogin: simplelogin
-    users:
-      - simplelogin
+    database: {}
+    users: []
   muehlbachler-public-services:gcp:
     dnsProject: muehlbachler-dns
     encryptionKey:
@@ -57,30 +57,6 @@ config:
     cilium:
       enabled: true
       version: 1.14.2
-  muehlbachler-public-services:mail:
-    acmeEmail: noreply@muehlbachler.xyz
-    domain: email.muehlbachler.io
-    handler: 10.100.73.1
-    publicIPv4Address: 178.63.69.250
-    relay:
-      host: mail.email.muehlbachler.io
-      password:
-        secure: AAABADVxL1RJyz1yZxJo7JKvv/GVoXPs3nFSohYX/Zwsxs7wSjmpCDVOLvLxqz42xJ50dzJMJH4=
-      port: 587
-      username: daemon@email.muehlbachler.io
-    relayServer: 10.20.0.10
-    server:
-      cpu: 1
-      diskSize: 8
-      host: pve
-      ipv4Address: 10.100.61.1
-      ipv6Address: 2a01:4f8:121:14e2:100::61:1
-      memory:
-        max: 1024
-        min: 1024
-      startupOrder: 100
-    spfInclude: mxroute.com
-    zoneId: email-muehlbachler-io
   muehlbachler-public-services:network:
     domain: hetzner.muehlbachler.io
     externalDomain:

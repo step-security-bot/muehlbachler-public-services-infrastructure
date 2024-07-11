@@ -20,7 +20,6 @@ import {
 import { createExternalDNSResources } from './lib/external_dns';
 import { createFluxResources } from './lib/flux';
 import { createPostgresql } from './lib/postgresql';
-import { createSimpleloginResources } from './lib/simplelogin';
 import { createDir } from './lib/util/create_dir';
 import { readFileContents } from './lib/util/file';
 import { createRandomPassword } from './lib/util/random';
@@ -42,10 +41,7 @@ export = async () => {
   const sshKey = createSSHKey('public-services', {});
 
   // database
-  const postgresqlUsers = createPostgresql();
-
-  // simplelogin resources
-  const dkimPublicKey = createSimpleloginResources(postgresqlUsers);
+  createPostgresql();
 
   // // Kubernetes cloud resources
   createExternalDNSResources();
@@ -137,11 +133,6 @@ export = async () => {
     cluster: {
       configuration: {
         kubeconfig: kubeConfig,
-      },
-    },
-    mail: {
-      dkim: {
-        publicKey: dkimPublicKey,
       },
     },
   };

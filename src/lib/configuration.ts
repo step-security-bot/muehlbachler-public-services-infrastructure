@@ -9,7 +9,6 @@ import { ClusterConfig } from '../model/config/cluster/cluster';
 import { DatabaseConfig } from '../model/config/database';
 import { GCPConfig } from '../model/config/google';
 import { K0sConfig } from '../model/config/k0s';
-import { MailConfig } from '../model/config/mail';
 import { NetworkConfig } from '../model/config/network';
 import { ProxmoxConfig } from '../model/config/proxmox';
 import { SecretStoresConfig } from '../model/config/secret_stores';
@@ -23,7 +22,6 @@ export const networkConfig = config.requireObject<NetworkConfig>('network');
 export const clusterConfig = config.requireObject<ClusterConfig>('cluster');
 export const k0sConfig = config.requireObject<K0sConfig>('k0s');
 export const databaseConfig = config.requireObject<DatabaseConfig>('database');
-export const mailConfig = config.requireObject<MailConfig>('mail');
 export const secretStoresConfig =
   config.requireObject<SecretStoresConfig>('secretStores');
 export const username = config.require<string>('username');
