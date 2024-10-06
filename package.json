@@ -14,9 +14,8 @@
     "cluster"
   ],
   "scripts": {
-    "build": "run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
-    "fix": "run-s fix:*",
+    "build": "tsc -p tsconfig.json",
+    "fix": "run-s fix:prettier fix:lint",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint --fix",
     "lint": "eslint",
@@ -28,7 +27,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@muhlba91/pulumi-proxmoxve": "^6.4.0",
+    "@muhlba91/pulumi-proxmoxve": "^6.15.0",
     "@pulumi/aws": "^6.7.0",
     "@pulumi/command": "^1.0.0",
     "@pulumi/gcp": "^8.0.0",

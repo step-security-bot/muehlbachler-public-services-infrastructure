@@ -158,6 +158,7 @@ export const createServer = (
         'efiDisk',
         'startup.downDelay',
         'startup.upDelay',
+        'watchdog',
       ],
     },
   );
