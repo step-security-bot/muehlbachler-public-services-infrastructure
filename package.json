@@ -26,6 +26,7 @@
   "engines": {
     "node": ">=20"
   },
+  "packageManager": "yarn@4.5.0",
   "dependencies": {
     "@muhlba91/pulumi-proxmoxve": "^6.15.0",
     "@pulumi/aws": "^6.7.0",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@eslint/compat": "^1.1.1",
     "@types/bcryptjs": "^2.4.2",
+    "@types/node": "^22.7.6",
     "@types/nunjucks": "^3.2.2",
     "eslint": "^9.2.0",
     "eslint-config-prettier": "^9.1.0",
@@ -57,14 +59,6 @@
     "typescript": "^5.4.5",
     "typescript-eslint": "^8.0.1"
   },
-  "files": [
-    "build/main",
-    "!**/*.spec.*",
-    "!**/*.json",
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md"
-  ],
   "prettier": {
     "singleQuote": true
   }
