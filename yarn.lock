@@ -876,11 +876,11 @@ __metadata:
   linkType: hard
 
 "@pulumi/tls@npm:^5.0.0":
-  version: 5.0.7
-  resolution: "@pulumi/tls@npm:5.0.7"
+  version: 5.0.9
+  resolution: "@pulumi/tls@npm:5.0.9"
   dependencies:
-    "@pulumi/pulumi": "npm:^3.0.0"
-  checksum: 10c0/76c8d1be48aba79674857ad5e44da05e77087323f8e8d696e71aee6c4e9a2f0262141741dae445a5a5204136ffa6750cf2925f0d2a9a539494a5bae1738dda0a
+    "@pulumi/pulumi": "npm:^3.136.0"
+  checksum: 10c0/480810147f80293ded5f7b80d73ffc99d11c1cd270f9ede2cb709aefa39ac5d5cae47273ea70de7ac968b3f5860c1029c02d02d2055a7655bd788d8ddb179b87
   languageName: node
   linkType: hard
 
